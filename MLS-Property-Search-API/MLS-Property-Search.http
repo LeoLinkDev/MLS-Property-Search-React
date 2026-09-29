@@ -1,0 +1,9 @@
+@MLS_Search_HostAddress = https://localhost:7030
+
+GET {{MLS_Search_HostAddress}}/api/health
+Accept: application/json
+
+###
+
+GET {{MLS_Search_HostAddress}}/api/listings/search?city=Springfield&targetBudget=450000&page=1&pageSize=5
+Accept: application/json

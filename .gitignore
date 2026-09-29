@@ -1,0 +1,5 @@
+**/bin/
+**/obj/
+MLS-Property-Search-UI/node_modules/
+MLS-Property-Search-UI/dist/
+frontend/tsconfig.tsbuildinfo

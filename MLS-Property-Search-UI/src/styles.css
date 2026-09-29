@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@600;700;800&display=swap');
+
+:root {
+    color: #18211f;
+    background: #f4f1ea;
+    font-family: 'DM Sans', sans-serif;
+    font-synthesis: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+main {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 54px 32px 80px;
+}
+
+.masthead {
+    max-width: 700px;
+    padding: 10px 0 10px;
+}
+
+.eyebrow,
+.section-label {
+    color: #b65437;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .14em;
+}
+
+h1,
+h2,
+h3 {
+    font-family: Syne, sans-serif;
+    margin: 0;
+}
+
+h1 {
+    font-size: clamp(24px, 7vw, 32px);
+    line-height: .94;
+    letter-spacing: -.03em;
+    margin: 18px 0 22px;
+}
+
+h1 em {
+    color: #b65437;
+    font-style: normal;
+}
+
+.masthead p {
+    color: #58635e;
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 560px;
+}
+
+.search-panel {
+    background: #1d3730;
+    color: #fff;
+    padding: 28px;
+    box-shadow: 12px 12px 0 #d9d2c4;
+}
+
+.search-panel .section-label {
+    color: #d9b26d;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+label {
+    color: #d3ddd7;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+input {
+    border: 1px solid #557066;
+    background: #29463e;
+    color: #fff;
+    font: inherit;
+    padding: 12px 13px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #d9b26d;
+}
+
+input::placeholder {
+    color: #94a69e;
+}
+
+.search-button {
+    align-self: end;
+    border: 0;
+    background: #d9b26d;
+    color: #1d3730;
+    cursor: pointer;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    padding: 13px;
+    font: 700 14px 'DM Sans';
+}
+
+.results {
+    padding-top: 20px;
+}
+
+.results-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 32px;
+    margin-top: 8px;
+}
+
+.page-note {
+    color: #718078;
+    font-size: 13px;
+}
+
+.listing {
+    border-top: 1px solid #d5d0c5;
+    display: flex;
+    gap: 22px;
+    padding: 22px 0;
+}
+
+.score {
+    background: #dce8da;
+    min-width: 64px;
+    height: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #285342;
+}
+
+.score strong {
+    font: 700 25px Syne;
+}
+
+.score span {
+    font-size: 9px;
+    letter-spacing: .15em;
+}
+
+.listing-main {
+    flex: 1;
+}
+
+.listing-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+h3 {
+    font-size: 21px;
+}
+
+.listing p {
+    margin: 5px 0 14px;
+    color: #718078;
+}
+
+.status {
+    font-size: 10px;
+    letter-spacing: .12em;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status.active {
+    color: #3b805c;
+}
+
+.status.pending {
+    color: #b65437;
+}
+
+.details {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    color: #718078;
+    font-size: 13px;
+}
+
+.details strong {
+    color: #18211f;
+    font-size: 17px;
+}
+
+.state {
+    border: 1px dashed #c7c0b3;
+    color: #718078;
+    padding: 38px;
+    text-align: center;
+}
+
+.state.error {
+    color: #a53f31;
+}
+
+.state button,
+.pagination button {
+    border: 0;
+    background: transparent;
+    color: #b65437;
+    cursor: pointer;
+    font: 700 13px 'DM Sans';
+    margin-left: 12px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding-top: 25px;
+    color: #718078;
+    font-size: 13px;
+}
+
+.pagination button {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    padding: 8px;
+    margin: 0;
+}
+
+.pagination button:disabled {
+    color: #bbb5a9;
+    cursor: default;
+}
+
+@media (max-width: 700px) {
+    main {
+        padding: 32px 18px 60px;
+    }
+
+    .masthead {
+        padding-bottom: 10px;
+    }
+
+    form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .search-button {
+        grid-column: 1 / -1;
+    }
+
+    .details {
+        flex-wrap: wrap;
+        gap: 8px 16px;
+    }
+
+    .listing-top {
+        display: block;
+    }
+
+    .status {
+        display: block;
+        margin-top: 8px;
+    }
+}
