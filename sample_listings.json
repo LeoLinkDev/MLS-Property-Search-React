@@ -31,7 +31,7 @@
     "longitude": -77.1873,
     "listedDate": "2026-08-27",
     "status": "active",
-    "description": "Top floor condo, walk to shopping. Pets allowed."
+    "description": "Top floor condo, walk to shopping, with parking. Pets allowed."
   },
   {
     "id": "A2",
@@ -65,7 +65,7 @@
     "longitude": -77.1901,
     "listedDate": "2026-08-30",
     "status": "active",
-    "description": "Renovated kitchen, fenced backyard, near schools."
+    "description": "Renovated kitchen, no parking, fenced backyard, near schools."
   },
   {
     "id": "A3",
@@ -167,7 +167,7 @@
     "longitude": -77.2653,
     "listedDate": "2026-08-15",
     "status": "active",
-    "description": "Peaceful street, close to Metro. Pet restrictions apply."
+    "description": "Peaceful street, with parking. close to Metro. Pet restrictions apply."
   },
   {
     "id": "A6",

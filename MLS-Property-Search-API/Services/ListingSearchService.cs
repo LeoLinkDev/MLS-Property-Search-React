@@ -26,6 +26,7 @@ public sealed record ListingResult(
     int Sqft,
     string Status,
     DateOnly ListedDate,
+    bool HasParking,
     double RelevanceScore);
 
 public sealed record SearchResponse(
@@ -74,8 +75,12 @@ public sealed class ListingSearchService : IListingSearchService
                 listing.Sqft,
                 listing.Status,
                 listing.ListedDate,
+                HasParking(listing.Description),
                 CalculateScore(listing, query.TargetBudget)))
-            .OrderByDescending(result => result.RelevanceScore)
+            .OrderBy(result => query.TargetBudget.HasValue
+                ? Math.Abs(result.Price - query.TargetBudget.Value)
+                : decimal.MaxValue)
+            .ThenByDescending(result => result.RelevanceScore)
             .ThenByDescending(result => result.ListedDate)
             .ThenBy(result => result.Source, StringComparer.Ordinal)
             .ThenBy(result => result.Id, StringComparer.Ordinal)
@@ -84,6 +89,13 @@ public sealed class ListingSearchService : IListingSearchService
         var totalPages = matches.Count == 0 ? 0 : (int)Math.Ceiling(matches.Count / (double)query.PageSize);
         var pageItems = matches.Skip((query.Page - 1) * query.PageSize).Take(query.PageSize).ToList();
         return new SearchResponse(pageItems, query.Page, query.PageSize, matches.Count, totalPages);
+    }
+
+    private static bool HasParking(string description)
+    {
+        return !description.Contains("no parking", StringComparison.OrdinalIgnoreCase)
+            && (description.Contains("has parking", StringComparison.OrdinalIgnoreCase)
+                || description.Contains("with parking", StringComparison.OrdinalIgnoreCase));
     }
 
     private double CalculateScore(Listing listing, decimal? targetBudget)

@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, Search, SlidersHorizontal } from "lucide-react";
 
 const APP_VERSION = "1.0.0.0";
 
-type Listing = { id: string; source: string; address: string; city: string; state: string; zip: string; price: number; bedrooms: number; bathrooms: number; sqft: number; status: string; listedDate: string; relevanceScore: number };
+type Listing = { id: string; source: string; address: string; city: string; state: string; zip: string; price: number; bedrooms: number; bathrooms: number; sqft: number; status: string; listedDate: string; hasParking: boolean; relevanceScore: number };
 type SearchResponse = { items: Listing[]; page: number; pageSize: number; totalCount: number; totalPages: number };
 type ApiErrorResponse = { errors?: Record<string, string[]> };
 

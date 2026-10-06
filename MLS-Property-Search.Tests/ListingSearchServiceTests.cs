@@ -45,6 +45,21 @@ public sealed class ListingSearchServiceTests
     }
 
     [Fact]
+    public void PrioritizesPriceProximityOverRecencyForTargetBudget()
+    {
+        var listings = new[]
+        {
+            Listing("Nearer", "MLS_A", "1 Main St", "Springfield", 399000, 2, new DateOnly(2026, 8, 1), "Near target."),
+            Listing("Farther", "MLS_B", "2 Main St", "Springfield", 470000, 2, new DateOnly(2026, 9, 2), "Far from target."),
+            Listing("Closest", "MLS_C", "3 Main St", "Springfield", 399500, 2, new DateOnly(2026, 8, 1), "Closest to target.")
+        };
+
+        var response = new ListingSearchService(listings).Search(new SearchQuery(TargetBudget: 400000));
+
+        Assert.Equal(["Closest", "Nearer", "Farther"], response.Items.Select(item => item.Id));
+    }
+
+    [Fact]
     public void PaginatesFirstAndPastEndBoundaries()
     {
         var first = Service().Search(new SearchQuery(Page: 1, PageSize: 2));
@@ -53,6 +68,34 @@ public sealed class ListingSearchServiceTests
         Assert.Equal(["A", "C"], first.Items.Select(item => item.Id));
         Assert.Empty(pastEnd.Items);
         Assert.Equal(2, pastEnd.TotalPages);
+    }
+
+    [Fact]
+    public void DerivesHasParkingFromPositiveDescription()
+    {
+        var response = new ListingSearchService(
+            [Listing("P", "MLS_P", "4 Park St", "Springfield", 475000, 2, new DateOnly(2026, 9, 2), "HAS PARKING included.")])
+            .Search(new SearchQuery());
+
+        Assert.True(response.Items.Single().HasParking);
+    }
+
+    [Fact]
+    public void DerivesHasParkingAsFalseForExplicitNoParkingDescription()
+    {
+        var response = new ListingSearchService(
+            [Listing("P", "MLS_P", "4 Park St", "Springfield", 475000, 2, new DateOnly(2026, 9, 2), "No parking available.")])
+            .Search(new SearchQuery());
+
+        Assert.False(response.Items.Single().HasParking);
+    }
+
+    [Fact]
+    public void TreatsUnspecifiedParkingAsFalse()
+    {
+        var response = Service().Search(new SearchQuery());
+
+        Assert.All(response.Items, item => Assert.False(item.HasParking));
     }
 
     [Fact]

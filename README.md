@@ -43,20 +43,20 @@ This stops only processes listening on ports `7030` and `5173`, then opens the A
 .\start.ps1 -StopOnly
 ```
 
-You can also run the launcher from the `frontend` directory with `npm run start:all`.
+You can also run the launcher from the `MLS-Property-Search-UI` directory with `npm run start:all`.
 
 ### Manual startup
 
 If you prefer separate terminals, start the API with the HTTPS launch profile:
 
 ```powershell
-dotnet run --project .\MLS-Search\MLS-Search.csproj --launch-profile https
+dotnet run --project .\MLS-Property-Search-API\MLS-Property-Search.csproj --launch-profile https
 ```
 
 In a second terminal:
 
 ```powershell
-Set-Location .\frontend
+Set-Location .\MLS-Property-Search-UI
 npm ci
 npm run dev
 ```
@@ -113,6 +113,17 @@ https://localhost:7030/api/listings/search?city=Springfield&targetBudget=450000&
 
 The response includes the current page, page size, total count, total pages, and ranked items. Invalid values return HTTP 400 with a validation-problem response. A valid query with no matches returns an empty item list and HTTP 200.
 
+Each item also includes a derived `hasParking` flag. The API reads the listing description and sets this flag to `true` when it contains `has parking` or `with parking`, case-insensitively. An explicit `no parking` description takes precedence and sets it to `false`; descriptions without a recognized parking phrase also return `false`.
+
+For example, a listing description containing `Has parking available.` returns:
+
+```json
+{
+  "id": "example",
+  "hasParking": true
+}
+```
+
 ## Ranking approach
 
 Filtering is applied first. Each remaining listing receives a score from 0 to 100:
@@ -120,17 +131,24 @@ Filtering is applied first. Each remaining listing receives a score from 0 to 10
 - Up to 60 points for price proximity to `targetBudget`. An exact match receives 60, with a linear reduction based on relative difference. If no target budget is supplied, this component contributes 0.
 - Up to 40 points for recency. The newest listing in the loaded dataset receives 40 and the oldest receives 0.
 
-Results sort by descending score, then newest `listedDate`, then ordinal `source` and `id` keys. The final tie-breakers make pagination repeatable. The score is intentionally a transparent ranking aid, not a valuation model.
+When `targetBudget` is provided, listings are ordered by:
+
+1. Closest absolute price to the target budget
+2. Relevance score
+3. Newest listing date
+4. Stable source and ID tie-breakers
+
+Without a target budget, results sort by relevance score followed by the newest listing date and the same stable source and ID tie-breakers. The score is intentionally a transparent ranking aid, not a valuation model.
 
 ## Tests
 
 ```powershell
-dotnet test .\MLS-Search.Tests\MLS-Search.Tests.csproj
-Set-Location .\frontend
+dotnet test .\MLS-Property-Search.Tests\MLS-Search.Tests.csproj
+Set-Location .\MLS-Property-Search-UI
 npm run build
 ```
 
-The service tests cover case-insensitive filters, no matches, tied scores, pagination boundaries, and invalid values.
+The service tests cover case-insensitive filters, no matches, tied scores, pagination boundaries, invalid values, and parking derivation for positive, negative, and unspecified descriptions.
 
 ## Authorization and production considerations
 
